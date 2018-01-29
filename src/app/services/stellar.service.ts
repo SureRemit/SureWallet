@@ -22,8 +22,9 @@ export class StellarService {
   public server: any;
 
   constructor() {
-    this.server = new StellarSdk.Server('https://horizon.stellar.org');
-    StellarSdk.Network.usePublicNetwork();
+    this.server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+    //StellarSdk.Network.usePublicNetwork();
+    StellarSdk.Network.useTestNetwork();
   }
 
 
