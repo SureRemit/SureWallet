@@ -1,0 +1,194 @@
+<app-theme></app-theme>
+
+<div class="container mtb-80">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Security Notes!</h4>
+        <p>Check the url to make sure you are on the correct website.</p>
+        <p>SureWallet does not save your secret key. It is stored on your browser and will be deleted once your session ends. i.e When you close your browser.</p>
+        <p>Please if you are going to use SureWallet on a shared computer, Remember to click the Logout button at the top right when you are done. This will clear everything from your browser.</p>
+        <p></p>
+        <!--<hr>-->
+        <!--<p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>-->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row welcome" *ngIf="hasPublicKey == true">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-block">
+          <form role="form" (ngSubmit)="onLoginWithSecret(f)" #f="ngForm">
+            <div class="form-group">
+              <label class="dark-blue">Public Address</label>
+              <h5>{{publicKey}}</h5>
+            </div>
+            <div class="form-group">
+              <label for="secretKey" class="dark-blue">Login with your secret key it to mange your account</label>
+              <input type="text" class="form-control input-md" name="secretKey" id="secretKey" ngModel placeholder="Secret key(example: SBFQQI5GUFWCPHNBCOEWXWCNDSLY7RBWW4S443BETLRXMWRL3ZKI7GUO)" required>
+            </div>
+
+            <div *ngIf="loggedIn == false; else loggedInSection">
+              <button type="submit" [ladda]="isActivating" data-style="zoom-in"  class="btn btn-lg btn-primary"> Login Now → </button>
+            </div>
+          </form>
+
+          <ng-template #loggedInSection>
+            <div class="mt20" *ngIf="activatedAccount == true; else enableActivateSection">
+              <div class="alert alert-warning" role="alert">
+                <p>This account is active on the network. Click the Enable RMT button below is accept RMTs with your public Address</p>
+              </div>
+              <button [ladda]="isActivating" data-style="zoom-in"  (click)="enableRMTTrust()" class="btn btn-lg btn-primary"> Trust RMT  Now → </button>
+            </div>
+            <ng-template #enableActivateSection>
+              <div class="mt20">
+                <div class="alert alert-warning" role="alert">
+                  <p>This account doesn't exist on the network. Click the Activate button to send 2 lumen (XLM) to fulfill <a href="https://www.stellar.org/developers/learn/concepts/fees.html#minimum-balance" target="_blank">minimum balance</a>.</p>
+                </div>
+                <button [ladda]="isActivating" data-style="zoom-in"  (click)="activateAccount()" class="btn btn-lg btn-primary"> Activate Account Now → </button>
+              </div>
+            </ng-template>
+          </ng-template>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb20">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header dark-blue">
+          Create a new Account Keypair
+        </div>
+        <div class="card-block">
+          <div class="row mb20">
+            <div class="col-sm-12">
+              <p class="dark-blue">To get started on using the Stellar network, you must first create a keypair. The keypair consists of two parts:</p>
+              <ul>
+                <li><strong>Public key</strong>: The public key is used to identify the account. It is also known as an account. This public key is used for receiving funds.</li>
+                <li><strong>Secret key</strong>: The secret key is used to access your account and make transactions. Keep this code safe and secure. Anyone with the code will have full access to the account and funds. If you lose the key, you will no longer be able to access the funds and there is no recovery mechanism.</li>
+              </ul>
+              <p class="dark-blue">In Addition, for participating in the ICO, you'll receive</p>
+              <ul>
+                <li>
+                  <strong>2 XLMs</strong>: this automatically activates your Stellar Keypair as required by the Stellar network.
+                </li>
+                <li>
+                  <strong>RMT Trust</strong>: A Trust is set up on your Keypair to accept RMT Tokens
+                </li>
+              </ul>
+              <div>
+                <button (click)="generateKeyPairs()" [ladda]="isGenerating" data-style="zoom-in"  class="btn btn-lg btn-primary"> Generate Keypair Now → </button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb10" *ngIf="hasKeyPair == true">
+            <div class="col-sm-12">
+              <div class="alert alert-success" role="alert">
+                <p>Keep your key secure. This secret key will only be showed to you once. SureWallet does not save it and will not be able to help you recover it if lost.</p>
+                <p>Public key (will be your Account ID): {{publicKey}}</p>
+                <p>Secret key (<strong>SAVE THIS AND KEEP THIS SECURE</strong>): {{secretKey}}</p>
+              </div>
+              <div class="alert alert-danger" role="alert">
+                <p>
+                  This account is active on the network, Click on the button below to manage your account, and Trust the RMT Asset Token.
+                </p>
+              </div>
+              <div>
+                <button (click)="enableRMTTrust()" [ladda]="isActivating" data-style="zoom-in"  class="btn btn-lg btn-primary"> Trust RMT  Now → </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb20">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header dark-blue">
+          Connect using your Ledger Nano S
+        </div>
+        <div class="card-block">
+          <div class="row mb20">
+            <div class="col-sm-12">
+              <p class="dark-blue">A very secure way to store your RMT is on a Ledger Nano S</p>
+              <p> First of all,  <a href="https://support.ledgerwallet.com/hc/en-us/articles/115003797194" rel="nofollow noopener" target="_blank">Follow Ledger’s guide on setting up your Nano S for Stellar (you might have to update firmware and software etc)</a></p>
+              <p> If you have already done that, great!. then just click the Login button below.</p>
+              <p class="dark-blue">In Addition, for participating in the ICO, you'll receive</p>
+              <ul>
+                <li>
+                  <strong>2 XLMs</strong>: this automatically activates your Stellar wallet as required by the Stellar network. If it's not already activated.
+                </li>
+                <li>
+                  <strong>RMT Trust</strong>: A Trust is set up on your Ledger Wallet to allow you store your RMT Tokens
+                </li>
+              </ul>
+
+              <div>
+                <button (click)="getLedgerAddress()" *ngIf="loggedInWithLedger == false" [ladda]="isLoading" data-style="zoom-in"  class="btn btn-success  btn-lg ml-16"> Login with Ledger Nano S → </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt20" *ngIf="loggedInWithLedger == true && activatedAccount == false">
+            <div class="alert alert-warning" role="alert">
+              <p>This account doesn't exist on the network. Click the Activate button to send 2 lumen (XLM) to fulfill <a href="https://www.stellar.org/developers/learn/concepts/fees.html#minimum-balance" target="_blank">minimum balance</a>.</p>
+            </div>
+            <button [ladda]="isActivating" data-style="zoom-in"  (click)="activateAccount()" class="btn btn-lg btn-primary"> Activate Account Now → </button>
+          </div>
+          <!--div class="mt20" *ngIf="loggedInWithLedger == true && activatedAccount == true && enabledRMT == false">
+            <div class="alert alert-warning" role="alert">
+              <p>This account is active on the network. Click the Enable RMT button below is accept RMTs with your public Address</p>
+            </div>
+            <button [ladda]="isActivating" data-style="zoom-in"  (click)="enableRMTTrust()" class="btn btn-lg btn-primary"> Trust RMT  Now → </button>
+          </div-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--<div class="row wallet-o">-->
+    <!--<div class="col-sm-12">-->
+    <!--<div class="card-deck">-->
+      <!--<div class="card p-3 text-center">-->
+        <!--<div class="card-block">-->
+          <!--<span class="text-muted">Just now</span>-->
+          <!--<h2 class="card-title"> BTC/USD</h2>-->
+          <!--<p class="card-text">(~ {{btcUSDValue | currency}})</p>-->
+          <!--<small><cite title="Source Title">coinmarketcap</cite></small>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="card  p-3  text-center">-->
+        <!--<div class="card-block">-->
+          <!--<span class="text-muted">Just now</span>-->
+          <!--<h2 class="card-title"> XLM/USD </h2>-->
+          <!--<p class="card-text">(~ {{ xlmUSDValue | currency }})</p>-->
+          <!--<small><cite title="Source Title">coinmarketcap</cite></small>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="card  p-3  text-center">-->
+        <!--<div class="card-block">-->
+          <!--<span class="text-muted">Just now</span>-->
+          <!--<h2 class="card-title"> RMT/USD </h2>-->
+          <!--<p class="card-text">(~ $0.02)</p>-->
+          <!--<small><cite title="Source Title">coinmarketcap</cite></small>-->
+        <!--</div>-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <!--</div>-->
+  <!--</div>-->
+</div>
+
+
+

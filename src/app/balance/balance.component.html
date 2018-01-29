@@ -1,0 +1,57 @@
+<app-theme></app-theme>
+
+<div class="container mtb-80">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-success text-center" role="alert">
+        <h5 class="alert-heading">{{publicKey}}</h5>
+        <p>You can receive transactions with your account ID.</p>
+        <div *ngIf="trustsRMT==false">
+          <button (click)="enableRMTTrust()" [ladda]="isEnabling" data-style="zoom-in"  class="btn btn-lg btn-primary"> Enable RMT Trust Now → </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="isFetchingBalances == true">
+    <div  class="">
+      <img class="image-loading" src="../../assets/images/interwind.svg">
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="isFetchingBalances == false">
+    <div  *ngFor="let bal of balances" class="col-sm-6 mb30">
+      <div class="card text-center asset-card">
+        <div class="card-block">
+          <img class="asset-logo" [src]="bal.img_name" />
+          <h5 class="card-title asset-code">{{bal.asset_code}}</h5>
+          <span class="asset-name"> {{bal.asset_code}}</span>
+          <br>
+          <span class="asset-uid text-center">{{bal.asset_issuer}}</span>
+
+          <p class="asset-av">Available Balance</p>
+          <p class="asset-balance"> {{bal.balance}} {{bal.asset_code}} </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<div class="col-sm-12">-->
+    <!--<div class="card">-->
+      <!--<ul class="list-group list-group-flush">-->
+        <!--<li class="list-group-item">-->
+          <!--<div class="alert alert-warning" role="alert">-->
+            <!--<div class="asset-list">-->
+              <!--<img class="asset-logo" src="/assets/images/XLM.png" />-->
+              <!--<span class="asset-code">XLM</span>-->
+              <!--<span class="asset-name"> Stellar Network</span>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<span class="float-right">10.0000 </span>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+</div>
